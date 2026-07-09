@@ -2,9 +2,9 @@ name: Threat Intel Pipeline
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   schedule:
-    - cron: "0 3 * * *"  # Every day at 03:00 UTC
+    - cron: "0 3 * * *"  # Runs daily at 03:00 UTC
 
 jobs:
   run-pipeline:
@@ -24,11 +24,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install pandas requests pydantic
 
-      - name: Run threat intel pipeline
+      - name: Run pipeline
         run: |
-          python pipeline.py
+          cd ${{ github.workspace }}
+          python -u pipeline.py
 
-      - name: Upload artifacts (reports and data)
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: threat-intel-output
