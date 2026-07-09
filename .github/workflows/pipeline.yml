@@ -26,7 +26,6 @@ jobs:
 
       - name: Run pipeline
         run: |
-          cd ${{ github.workspace }}
           python -u pipeline.py
 
       - name: Upload artifacts
