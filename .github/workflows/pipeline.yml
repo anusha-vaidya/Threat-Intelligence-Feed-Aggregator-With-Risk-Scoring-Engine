@@ -1,37 +1,5 @@
-name: Threat Intel Pipeline
-
-on:
-  push:
-    branches: [ main ]
-  schedule:
-    - cron: "0 3 * * *"  # Runs daily at 03:00 UTC
-
-jobs:
-  run-pipeline:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pandas requests pydantic
-
-      - name: Run pipeline
-        run: |
-          python -u pipeline.py
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: threat-intel-output
-          path: |
-            data/enriched/iocs_scored.csv
-            reports/daily_report.md
+name: Run pipeline
+run: |
+    ls -R  # shows all files so you can confirm path
+    cd ${{ github.workspace }}
+    python -u run_pipeline.py
